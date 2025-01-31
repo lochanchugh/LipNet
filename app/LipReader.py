@@ -113,7 +113,7 @@ if selected_option :
         frames = frames.unsqueeze(0)
         #Load model 
         st.info("This is the output of the model")
-        model = torch.load(os.path.join(model_path, st.session_state.selected_model), weights_only= False).to(device)
+        model = torch.load(os.path.join(model_path, st.session_state.selected_model), weights_only= False, map_location=device).to(device)
         y_hat = model(frames)
         y_pred = torch.argmax(y_hat, axis = 2)
         y_pred = y_pred.squeeze(dim = 0)
