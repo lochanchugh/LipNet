@@ -79,7 +79,7 @@ if selected_option :
         os.system(f"ffmpeg -i {file_path} -vcodec libx264  selected_video.mp4 -y")
 
         # Renedering video
-        video = open("selected_video.mp4", "rb")
+        video = open(os.path.join(os.path.dirname(__file__),"selected_video.mp4"), "rb")
         video_bytes = video.read()
         st.video(video_bytes)
 
@@ -104,7 +104,7 @@ if selected_option :
         frames_scaled = ((frames_np - frames_np.min()) / (frames_np.max() - frames_np.min()) * 255).astype(np.uint8)
         frames_list = [frame for frame in frames_scaled]
         imageio.mimsave("animation.gif", frames_list, fps = 10)
-        st.image("animation.gif", width = 400)
+        st.image(os.path.join(os.path.dirname(__file__),"animation.gif"), width = 400)
 
         #Preprocess frames
         frames  = video.float()
