@@ -11,6 +11,9 @@ from torchnlp.encoders import LabelEncoder
 
 
 device = torch.device("cpu")
+media_path = os.path.join(os.path.dirname(__file__),"../media")
+model_path = os.path.join(os.path.dirname(__file__),"../models")
+data_path = os.path.join(os.path.dirname(__file__),"../data")
 #Layout config
 st.set_page_config(layout= "wide")
 st.title("Lip Reader App")
@@ -18,7 +21,7 @@ if "loss" not in st.session_state:
     st.session_state["loss"] = False
 #Instantiate the sidebar
 with st.sidebar:
-    st.image("../media/computerVision.jpg")
+    st.image(os.path.join(media_path, "computerVision.jpg"))
     
     st.info("""This application is an implemention of the LipNet paper. The goal is to create a computer vision model 
             (LipNet) that can read lips through videos.
@@ -39,7 +42,7 @@ with st.sidebar:
         loss_butt= st.button("Hide loss graph", on_click= unclick_loss_button)
 
     if st.session_state.loss : 
-        st.image("../media/LossGraph.png")
+        st.image(os.path.join(media_path, "LossGraph.png"))
 
 # Save session states
 if "split" not in st.session_state:
@@ -55,7 +58,7 @@ if "decoded_button" not in st.session_state:
 
 
 # Select videos
-files = os.listdir(os.path.join("..", "data", "s1"))
+files = os.listdir(os.path.join(data_path, "s1"))
 split = ["training files", "validation files"]
 st.session_state["split"] = st.selectbox("Choose between training and validation split", split)
 n = len(files)
@@ -72,16 +75,16 @@ col1 , col2 = st.columns(2)
 if selected_option : 
     with col1 : 
         st.text("Selected video")
-        file_path = os.path.join("..", "data", "s1", selected_option)
+        file_path = os.path.join(data_path,"s1", selected_option)
         os.system(f"ffmpeg -i {file_path} -vcodec libx264  selected_video.mp4 -y")
 
         # Renedering video
-        video = open("../media/selected_video.mp4", "rb")
+        video = open("selected_video.mp4", "rb")
         video_bytes = video.read()
         st.video(video_bytes)
 
         filename = selected_option[ : -4]
-        labels_path = os.path.join("..","data", "align\s1", f"{filename}.align")
+        labels_path = os.path.join(data_path, "align\s1", f"{filename}.align")
         labels = load_annot(labels_path, True)
         delim = ""
         st.text(f"The true labels are : {delim.join(decode(labels))}")
@@ -91,7 +94,7 @@ if selected_option :
     with col2 :
         #select model
         st.info("LIPNET_100_EPOCHS performs the best on test data")
-        models = os.listdir(os.path.join("..", "models"))
+        models = os.listdir(model_path)
         st.session_state.selected_model = st.selectbox("Choose a model", models)
         st.info("This is what the ML model sees")
         video = load_video(file_path, from_path=True)
@@ -101,7 +104,7 @@ if selected_option :
         frames_scaled = ((frames_np - frames_np.min()) / (frames_np.max() - frames_np.min()) * 255).astype(np.uint8)
         frames_list = [frame for frame in frames_scaled]
         imageio.mimsave("animation.gif", frames_list, fps = 10)
-        st.image("../media/animation.gif", width = 400)
+        st.image("animation.gif", width = 400)
 
         #Preprocess frames
         frames  = video.float()
@@ -110,7 +113,7 @@ if selected_option :
         frames = frames.unsqueeze(0)
         #Load model 
         st.info("This is the output of the model")
-        model = torch.load(f"../models/{st.session_state.selected_model}", weights_only= False).to(device)
+        model = torch.load(os.path.join(model_path, st.session_state.selected_model), weights_only= False).to(device)
         y_hat = model(frames)
         y_pred = torch.argmax(y_hat, axis = 2)
         y_pred = y_pred.squeeze(dim = 0)
