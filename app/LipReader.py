@@ -18,7 +18,7 @@ if "loss" not in st.session_state:
     st.session_state["loss"] = False
 #Instantiate the sidebar
 with st.sidebar:
-    st.image("computerVision.jpg")
+    st.image("../media/computerVision.jpg")
     
     st.info("""This application is an implemention of the LipNet paper. The goal is to create a computer vision model 
             (LipNet) that can read lips through videos.
@@ -39,7 +39,7 @@ with st.sidebar:
         loss_butt= st.button("Hide loss graph", on_click= unclick_loss_button)
 
     if st.session_state.loss : 
-        st.image("../LossGraph.png")
+        st.image("../media/LossGraph.png")
 
 # Save session states
 if "split" not in st.session_state:
@@ -76,7 +76,7 @@ if selected_option :
         os.system(f"ffmpeg -i {file_path} -vcodec libx264  selected_video.mp4 -y")
 
         # Renedering video
-        video = open("selected_video.mp4", "rb")
+        video = open("../media/selected_video.mp4", "rb")
         video_bytes = video.read()
         st.video(video_bytes)
 
@@ -101,7 +101,7 @@ if selected_option :
         frames_scaled = ((frames_np - frames_np.min()) / (frames_np.max() - frames_np.min()) * 255).astype(np.uint8)
         frames_list = [frame for frame in frames_scaled]
         imageio.mimsave("animation.gif", frames_list, fps = 10)
-        st.image("animation.gif", width = 400)
+        st.image("../media/animation.gif", width = 400)
 
         #Preprocess frames
         frames  = video.float()
