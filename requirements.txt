@@ -1,0 +1,13 @@
+imageio
+matplotlib
+matplotlib-inline
+numpy
+opencv-python-headless 
+pandas
+pillow
+pytorch-nlp
+streamlit
+torch
+torchaudio
+torcheval
+torchvision
