@@ -1,10 +1,5 @@
 import numpy as np
-import cv2 as cv
-import imageio
 import matplotlib.pyplot as plt
-import gdown
-import os
-import datetime
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -12,7 +7,6 @@ from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence
 from torchvision.transforms.functional import rgb_to_grayscale
 from torchnlp.encoders import LabelEncoder 
-from torcheval.metrics.functional import word_error_rate
 from data_preprocessing import LipDataset, collate_fn, ctc_decode
 from CONFIG import EPOCHS, BATCH_SIZE, device, path
 print("packages imported successfully!")

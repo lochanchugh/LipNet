@@ -2,9 +2,7 @@ import numpy as np
 import cv2 as cv
 import imageio
 import matplotlib.pyplot as plt
-import gdown
 import os
-import datetime
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -12,7 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 from torch.nn.utils.rnn import pad_sequence
 from torchvision.transforms.functional import rgb_to_grayscale
 from torchnlp.encoders import LabelEncoder 
-from torcheval.metrics.functional import word_error_rate
+
 
 path = "data/s1"
 vocab = [x for x in "abcdefghijklmnopqrstuvwxyz'?!123456789 "]
