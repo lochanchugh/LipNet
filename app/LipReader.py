@@ -84,7 +84,7 @@ if selected_option :
         st.video(video_bytes)
 
         filename = selected_option[ : -4]
-        labels_path = os.path.join(data_path, "align\s1", f"{filename}.align")
+        labels_path = os.path.join(data_path, "align", f"{filename}.align")
         labels = load_annot(labels_path, True)
         delim = ""
         st.text(f"The true labels are : {delim.join(decode(labels))}")
